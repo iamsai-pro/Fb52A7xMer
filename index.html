@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Terminal Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- TERMINAL WINDOW -->
+  <div id="terminal-window">
+    <div id="terminal-header">
+      <div class="terminal-controls">
+        <span class="close-btn"></span>
+        <span class="minimize-btn"></span>
+        <span class="maximize-btn"></span>
+      </div>
+      <span class="terminal-title">user@portfolio:~$</span>
+    </div>
+    <div id="terminal-body">
+      <div id="output"></div>
+      <div id="input-line">
+        <span class="prompt">user@portfolio:~$</span>
+        <input type="text" id="command-input" autofocus>
+        <span id="cursor">_</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const outputDiv = document.getElementById('output');
+    const commandInput = document.getElementById('command-input');
+    const cursorSpan = document.getElementById('cursor');
+
+    const terminalData = {
+      "whoami": {
+        name: "PABOLU VENKATA SUBRAHMANYA DHEERAJ",
+        title: "Full-Stack Developer"
+      },
+      "education": [
+        {
+          degree: "Bachelor of Engineering, Computer Science and Engineering",
+          institution: "R . M . D E n g i n e e r i n g C o l l e g e , C h e n n a i",
+          duration: "2022 - 2026",
+          cgpa: "7.70"
+        },
+        {
+          degree: "Higher Secondary School",
+          institution: "N a r a y a n a J r . c o l l e g e , N e l l o r e",
+          duration: "2020 - 2022",
+          percentage: "92.6"
+        },
+        {
+          degree: "Secondary Education",
+          institution: "V i v e k a n a n d a H . S",
+          duration: "2020",
+          percentage: "76.17"
+        }
+      ],
+      "skills": {
+        languages: ["Python 3", "Java"],
+        frameworks: ["Flask", "Spring Boot", "React js"],
+        webTechnologies: ["HTML", "CSS", "Tailwindcss"],
+        database: ["Structured Query Language (SQL)"],
+        webTools: ["Github", "Git"]
+      },
+      "projects": [
+        {
+          name: "Full-Stack Firebase User Portfolio System",
+          description: [
+            "Developed user authentication, profile management, and file upload features using Firebase Authentication, Realtime Database & Storage.",
+            "Built a clean and responsive UI using HTML and CSS to ensure user-friendly interface.",
+            "Created an admin dashboard in Flask to manage user lifecycle (CRUD operations), leading to clean and structured data handling."
+          ]
+        },
+        {
+          name: "Representation and Symbols of Nucleotide Sequence Data",
+          description: [
+            "Developed a tool that converts any input text into a DNA-base sequence (A, C, G, T) and displays the output in four distinct colours."
+          ]
+        },
+        {
+          name: "Resume to Portfolio Generator",
+          description: [
+            "Built a full-stack application using React (Vite) and Flask that converts resume PDFs into AI-generated, responsive portfolio websites.",
+            "Automated deployment by integrating GitHub APIs to create repositories, upload HTML/CSS files, and deliver a live GitHub Pages link within seconds."
+          ]
+        }
+      ],
+      "certifications": [
+        "DATA BASE MANAGEMENT SYSTEM - NPTEL",
+        "Responsive Web Design - free code camp"
+      ],
+      "contact": {
+        email: "subrahmanyadheeraj1918@gmail.com",
+        phone: "(+91)7032671918",
+        address: "B-11-582, Chennuru road, Buchi reddy palem",
+        portfolio: "https://dheeraj1918.github.io/portfolio/",
+        github: "https://github.com/dheeraj1918"
+      },
+      "objective": "Work for an organization that provides me the opportunity to improve my skills and knowledge to grow along with the organization’s objective."
+    };
+
+    function renderOutput(text) {
+      const line = document.createElement('div');
+      line.classList.add('output-line');
+      line.textContent = text;
+      outputDiv.appendChild(line);
+      outputDiv.scrollTop = outputDiv.scrollHeight;
+    }
+
+    function renderCommandOutput(command, output) {
+      renderOutput(`<span class="command-prefix">user@portfolio:~$</span> ${command}`);
+      if (Array.isArray(output)) {
+        output.forEach(item => renderOutput(item));
+      } else if (typeof output === 'object' && output !== null) {
+        for (const key in output) {
+          if (output.hasOwnProperty(key)) {
+            if (typeof output[key] === 'object' && output[key] !== null) {
+              renderOutput(`\n<span class="key">${key}:</span>`);
+              for (const subKey in output[key]) {
+                if (output[key].hasOwnProperty(subKey)) {
+                  renderOutput(`  - ${subKey.charAt(0).toUpperCase() + subKey.slice(1)}: ${output[key][subKey]}`);
+                }
+              }
+            } else {
+              renderOutput(`- <span class="key">${key}:</span> ${output[key]}`);
+            }
+          }
+        }
+      } else {
+        renderOutput(output);
+      }
+      renderOutput(''); // Add a blank line for spacing
+    }
+
+    function handleCommand(command) {
+      command = command.trim().toLowerCase();
+      let output = "";
+      let displayCommand = true;
+
+      switch (command) {
+        case 'help':
+          output = "Available commands: whoami, education, skills, projects, certifications, contact, objective, clear";
+          break;
+        case 'whoami':
+          output = `${terminalData.whoami.name} - ${terminalData.whoami.title}`;
+          break;
+        case 'education':
+          output = terminalData.education.map(edu =>
+            `${edu.degree} at ${edu.institution} (${edu.duration})${edu.cgpa ? `, CGPA: ${edu.cgpa}` : ''}${edu.percentage ? `, Percentage: ${edu.percentage}%` : ''}`
+          );
+          break;
+        case 'skills':
+          output = [];
+          for (const category in terminalData.skills) {
+            if (terminalData.skills.hasOwnProperty(category)) {
+              output.push(`- <span class="key">${category.charAt(0).toUpperCase() + category.slice(1)}:</span> ${terminalData.skills[category].join(', ')}`);
+            }
+          }
+          break;
+        case 'projects':
+          output = [];
+          terminalData.projects.forEach(project => {
+            output.push(`\n<span class="project-title">${project.name}</span>`);
+            project.description.forEach(line => output.push(`  ${line}`));
+          });
+          break;
+        case 'certifications':
+          output = terminalData.certifications;
+          break;
+        case 'contact':
+          output = [];
+          for (const key in terminalData.contact) {
+            if (terminalData.contact.hasOwnProperty(key)) {
+              output.push(`- <span class="key">${key.charAt(0).toUpperCase() + key.slice(1)}:</span> ${terminalData.contact[key]}`);
+            }
+          }
+          break;
+        case 'objective':
+          output = terminalData.objective;
+          break;
+        case 'clear':
+          outputDiv.innerHTML = '';
+          displayCommand = false;
+          break;
+        default:
+          output = `Command not found: ${command}. Type 'help' for a list of commands.`;
+      }
+
+      if (displayCommand) {
+        renderCommandOutput(command, output);
+      }
+      commandInput.value = '';
+    }
+
+    commandInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleCommand(commandInput.value);
+      }
+    });
+
+    // Blinking cursor simulation
+    let cursorVisible = true;
+    setInterval(() => {
+      cursorSpan.style.opacity = cursorVisible ? '1' : '0';
+      cursorVisible = !cursorVisible;
+    }, 500);
+
+    // Initial prompt and welcome message
+    renderOutput("Welcome to PABOLU VENKATA SUBRAHMANYA DHEERAJ's terminal portfolio.");
+    renderOutput("Type 'help' for a list of available commands.");
+    renderOutput("");
+  </script>
+
+</body>
+</html>
