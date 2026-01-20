@@ -1,0 +1,150 @@
+
+/* TERMINAL STYLES */
+body {
+  margin: 0;
+  background-color: #111;
+  font-family: 'Courier New', Courier, monospace;
+  color: #0f0; /* Default green text */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden; /* Prevent scrollbars on body */
+}
+
+#terminal-window {
+  width: 90%;
+  max-width: 800px;
+  height: 80vh;
+  max-height: 600px;
+  background-color: #000;
+  border: 2px solid #333;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3); /* Subtle green glow */
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+#terminal-header {
+  background-color: #222;
+  color: #fff;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #333;
+}
+
+.terminal-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.terminal-controls span {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #f00; /* Default red */
+}
+
+.terminal-controls .close-btn { background-color: #ff5f56; }
+.terminal-controls .minimize-btn { background-color: #ffbd2e; }
+.terminal-controls .maximize-btn { background-color: #27c93f; }
+
+.terminal-title {
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+#terminal-body {
+  flex-grow: 1;
+  padding: 15px;
+  overflow-y: auto;
+  position: relative;
+}
+
+#output {
+  white-space: pre-wrap; /* Preserve whitespace and line breaks */
+  word-wrap: break-word; /* Break long words */
+}
+
+.output-line {
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+.command-prefix {
+  color: #0f0; /* Green */
+  margin-right: 5px;
+}
+
+.key {
+  color: #0ff; /* Cyan */
+  font-weight: bold;
+}
+
+.project-title {
+  color: #fff; /* White */
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+#input-line {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.prompt {
+  color: #0f0; /* Green */
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+#command-input {
+  flex-grow: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #0f0; /* Green */
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1em;
+  caret-color: #0f0; /* Green cursor */
+}
+
+#cursor {
+  background-color: #0f0; /* Green */
+  width: 10px; /* Adjust size as needed */
+  height: 1.2em; /* Match line height */
+  display: inline-block;
+  animation: blink 0.75s step-end infinite;
+  margin-left: 5px;
+  opacity: 1; /* Start visible */
+}
+
+@keyframes blink {
+  from, to { background-color: transparent; }
+  50% { background-color: #0f0; }
+}
+
+/* Basic Responsiveness */
+@media (max-width: 600px) {
+  #terminal-window {
+    width: 95%;
+    height: 90vh;
+  }
+  #terminal-header {
+    padding: 6px 10px;
+  }
+  #terminal-body {
+    padding: 10px;
+  }
+  .prompt {
+    font-size: 0.9em;
+  }
+  #command-input {
+    font-size: 0.9em;
+  }
+}
